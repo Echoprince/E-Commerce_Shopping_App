@@ -1,14 +1,23 @@
 const express = require('express')
 const router = express.Router()
+const isAuth = require('../middleware/auth')
 
-const {getAllProducts, getCart, getCheckout, getOrder} = require('../controllers/shop')
+const {getAllProducts, getCart, getIndexPage, postOrder, getASingleProduct, addProductToCart, deleteCartItemById, getUserOrder} = require('../controllers/shop')
 
-router.route('/products').get(getAllProducts)
+/**
+ * All ROUTES BELOW SHARE END POINT '/api/shop'
+ */
 
-router.route('/cart').get(getCart)
+ router.route('/products').get(getIndexPage)
 
-router.route('/order').get(getOrder)
+router.route('/products/me').get(isAuth, getAllProducts)
 
-router.route('/checkout').get(getCheckout)
+router.route('/cart').get(isAuth, getCart).post(isAuth, addProductToCart)
+
+router.route('/cart-delete').post(isAuth, deleteCartItemById)
+
+router.route('/order').post(isAuth, postOrder).get(isAuth, getUserOrder)
+
+router.route('/:productId').get(isAuth, getASingleProduct)
 
 module.exports = router

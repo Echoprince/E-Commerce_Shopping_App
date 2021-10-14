@@ -5,20 +5,22 @@ const schema = new mongoose.Schema({
         type : String,
         required: true
     },
-    imageUrl : {
-        type : String,
-        required: false
-    },
     description: {
         type: String,
         required: true
     },
     price : {
         type : Number,
-        default: 0
+        default: 0,
+        required: true
+    },
+    userId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
 },{timestamps: true})
 
-const ProductModel = mongoose.model('product', schema)
+const ProductModel = mongoose.model('Product', schema)
 
 module.exports = ProductModel
