@@ -19,6 +19,7 @@
     "mongoose": "^6.0.10",
     "nodemailer": "^6.7.0",
     "nodemailer-sendgrid-transport": "^0.2.0",
+    "stripe": "^8.182.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {

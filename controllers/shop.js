@@ -2,6 +2,9 @@ const ProductModel = require('../model/productModel')
 const UserModel = require('../model/userModel.js')
 const OrderModel = require('../model/orderModel')
 const { StatusCodes } = require("http-status-codes")
+const {STRIPE_KEY} = require('../config.js')
+
+const stripe = require("stripe")(`${STRIPE_KEY}`)
 
 
 const getIndexPage = async (req, res, next) => {
@@ -121,6 +124,35 @@ const getUserOrder = async (req, res, next) => {
     res.status(200).json({error: false, message: `Hi ${user.name} here are Your Orders`, result: order})
 }
 
+const getCheckoutPage = async (req, res, next) => {
+    try{
+
+        let products
+        let total = 0
+         
+        await UserModel.findOne({_id: req.userId}).populate('cart.items.productId')
+        .exec((err, prods)=> {
+            if(err){
+                console.log(err)
+            }else{
+                products = prods.cart.items
+                total = 0
+                products.forEach(p => {
+                    total += p.quantity * p.productId.price
+                    res.status(200).json({error: false, message: `Hi ${req.user.name} here are Your confirmed Orders`, result: {products: products, total_Price : total}})
+                })
+             
+            }
+            
+        })
+
+     
+    }catch(e){
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: e.message, message: 'Some error occured'})
+    }
+    
+}
+
 
 
 module.exports = {
@@ -131,6 +163,7 @@ module.exports = {
     addProductToCart,
     getUserOrder,
     postOrder,
-    getIndexPage
+    getIndexPage,
+    getCheckoutPage
     
 }

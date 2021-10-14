@@ -6,6 +6,7 @@ module.exports = {
     TOKEN_SECRET : process.env.TOKEN_SECRET,
     MONGO_URI: process.env.MONGO_URI,
     TOKEN_EXPIRES_IN: process.env.TOKEN_EXPIRES_IN,
-    API_KEY_MAILER: process.env.API_KEY_MAILER
+    API_KEY_MAILER: process.env.API_KEY_MAILER,
+    STRIPE_KEY: process.env.STRIPE_KEY
 }
 
